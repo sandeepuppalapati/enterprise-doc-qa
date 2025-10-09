@@ -45,6 +45,7 @@ data/
 chroma_db/
 *.pdf
 *.txt
+!requirements.txt
 *.docx
 
 # Logs
