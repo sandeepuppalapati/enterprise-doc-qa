@@ -3,7 +3,6 @@ Document loader for processing PDF files.
 """
 import logging
 from pathlib import Path
-from typing import List, Optional
 from pypdf import PdfReader
 
 logger = logging.getLogger(__name__)

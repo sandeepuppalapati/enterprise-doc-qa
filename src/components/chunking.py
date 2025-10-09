@@ -4,7 +4,6 @@ Text chunking utilities for splitting documents into manageable pieces.
 import logging
 import os
 from typing import List, Optional
-import re
 
 logger = logging.getLogger(__name__)
 

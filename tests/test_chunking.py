@@ -1,7 +1,6 @@
 """
 Unit tests for the document chunking component.
 """
-import pytest
 from src.components.chunking import DocumentChunker
 
 

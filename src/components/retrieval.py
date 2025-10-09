@@ -84,14 +84,19 @@ class RAGPipeline:
             Generated answer
         """
         if not system_prompt:
-            system_prompt = """You are a helpful AI assistant that answers questions based on the provided context documents.
-
-Rules:
-1. Answer ONLY based on the information in the provided documents
-2. If the answer is not in the documents, say "I don't have enough information to answer that question"
-3. Cite which document number(s) you used when answering
-4. Be concise but complete
-5. If multiple documents have relevant information, synthesize them"""
+            system_prompt = (
+                "You are a helpful AI assistant that answers questions "
+                "based on the provided context documents.\n\n"
+                "Rules:\n"
+                "1. Answer ONLY based on the information in the provided "
+                "documents\n"
+                "2. If the answer is not in the documents, say \"I don't "
+                "have enough information to answer that question\"\n"
+                "3. Cite which document number(s) you used when answering\n"
+                "4. Be concise but complete\n"
+                "5. If multiple documents have relevant information, "
+                "synthesize them"
+            )
 
         user_message = f"""Context Documents:
 {context}
@@ -134,7 +139,10 @@ Please provide a clear, accurate answer based on the context above."""
 
             if not source_docs:
                 return {
-                    'answer': "I don't have any documents to answer your question. Please upload documents first.",
+                    'answer': (
+                        "I don't have any documents to answer your "
+                        "question. Please upload documents first."
+                    ),
                     'sources': [],
                     'context': ""
                 }

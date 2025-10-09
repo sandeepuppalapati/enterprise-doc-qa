@@ -14,10 +14,10 @@ load_dotenv()
 # Add parent directory to path to import components
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
-from src.components.document_loader import DocumentLoader
-from src.components.chunking import DocumentChunker
-from src.components.embeddings import VectorStore
-from src.components.retrieval import RAGPipeline
+from src.components.document_loader import DocumentLoader  # noqa: E402
+from src.components.chunking import DocumentChunker  # noqa: E402
+from src.components.embeddings import VectorStore  # noqa: E402
+from src.components.retrieval import RAGPipeline  # noqa: E402
 
 # Configure logging
 logging.basicConfig(
@@ -54,7 +54,10 @@ def initialize_components():
     try:
         # Check for API key
         if not os.getenv('ANTHROPIC_API_KEY'):
-            st.error("⚠️ ANTHROPIC_API_KEY not found in environment variables. Please set it in your .env file.")
+            st.error(
+                "⚠️ ANTHROPIC_API_KEY not found in environment variables. "
+                "Please set it in your .env file."
+            )
             st.stop()
 
         # Initialize vector store
@@ -105,7 +108,10 @@ def process_uploaded_file(uploaded_file):
             })
 
             st.success(f"✅ Successfully processed {uploaded_file.name}")
-            st.info(f"📊 Created {stats['total_chunks']} chunks (avg size: {int(stats['avg_chunk_size'])} chars)")
+            st.info(
+                f"📊 Created {stats['total_chunks']} chunks "
+                f"(avg size: {int(stats['avg_chunk_size'])} chars)"
+            )
 
             return True
 
@@ -127,11 +133,22 @@ def display_answer(result):
         st.markdown("### 📚 Sources")
 
         for i, source in enumerate(result['sources'], 1):
-            with st.expander(f"Source {i} - Relevance Score: {1 - source.get('distance', 0):.2%}"):
-                st.markdown(f"**Filename:** {source['metadata'].get('filename', 'Unknown')}")
-                st.markdown(f"**Chunk:** {source['metadata'].get('chunk_index', 'N/A')} / {source['metadata'].get('total_chunks', 'N/A')}")
+            relevance = 1 - source.get('distance', 0)
+            with st.expander(
+                f"Source {i} - Relevance Score: {relevance:.2%}"
+            ):
+                filename = source['metadata'].get('filename', 'Unknown')
+                st.markdown(f"**Filename:** {filename}")
+                chunk_idx = source['metadata'].get('chunk_index', 'N/A')
+                total = source['metadata'].get('total_chunks', 'N/A')
+                st.markdown(f"**Chunk:** {chunk_idx} / {total}")
                 st.markdown("**Content:**")
-                st.text(source['text'][:500] + "..." if len(source['text']) > 500 else source['text'])
+                content = (
+                    source['text'][:500] + "..."
+                    if len(source['text']) > 500
+                    else source['text']
+                )
+                st.text(content)
 
 
 def main():
@@ -233,8 +250,11 @@ def main():
 
         if st.session_state.chat_history:
             # Show recent questions
-            for i, item in enumerate(reversed(st.session_state.chat_history[-5:]), 1):
-                with st.expander(f"Q{len(st.session_state.chat_history) - i + 1}: {item['question'][:40]}..."):
+            recent = reversed(st.session_state.chat_history[-5:])
+            for i, item in enumerate(recent, 1):
+                q_num = len(st.session_state.chat_history) - i + 1
+                q_preview = item['question'][:40]
+                with st.expander(f"Q{q_num}: {q_preview}..."):
                     st.markdown(f"**Q:** {item['question']}")
                     st.markdown(f"**A:** {item['result']['answer'][:200]}...")
         else:
